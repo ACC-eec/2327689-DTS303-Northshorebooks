@@ -1,18 +1,37 @@
-from rest_framework import viewsets, filters
-from rest_framework.permissions import AllowAny, IsAdminUser
-from rest_framework.decorators import action
+"""DRF API for the Book resource.
+
+Public read access (``GET /api/books/`` and ``GET /api/books/<id>/``) and
+admin-only write access (POST/PUT/PATCH/DELETE) — coursework requirement 2.
+
+Filtering is built deliberately on Django ORM lookups to satisfy the
+SQL-injection requirement: every query parameter is validated and
+parameterised, never string-formatted into raw SQL.
+"""
+from decimal import Decimal, InvalidOperation
+
 from django.db.models import Q
-from django.core.exceptions import ValidationError
+from rest_framework import filters, viewsets
+from rest_framework.permissions import AllowAny, IsAdminUser
 
 from .models import Book
 from .serializers import BookSerializer
 
 
+# Allow-listed values for ``?ordering=`` — anything else is silently
+# discarded so a malicious caller cannot probe arbitrary columns.
+ALLOWED_ORDERING_FIELDS = frozenset([
+    'title', 'author', 'price', 'created_at',
+    '-title', '-author', '-price', '-created_at',
+])
+
+
 class BookViewSet(viewsets.ModelViewSet):
+    """CRUD viewset for :class:`catalogue.models.Book`.
+
+    Read endpoints are public; write endpoints require ``is_staff`` via
+    :class:`rest_framework.permissions.IsAdminUser`.
     """
-    ViewSet for viewing and editing Book instances.
-    Public GET access, admin-only write access.
-    """
+
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
@@ -21,9 +40,7 @@ class BookViewSet(viewsets.ModelViewSet):
     ordering = ['title']
 
     def get_permissions(self):
-        """
-        Instantiates and returns the list of permissions that this view requires.
-        """
+        """Permit anyone to list/retrieve; require staff for everything else."""
         if self.action in ['list', 'retrieve']:
             permission_classes = [AllowAny]
         else:
@@ -31,49 +48,41 @@ class BookViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        """
-        Optionally restricts the returned books by filtering against
-        query parameters in the URL.
-        """
+        """Apply optional ``author``, ``min_price``, ``max_price``, ``search``
+        and ``ordering`` query parameters, ignoring anything malformed."""
         queryset = Book.objects.all()
-        
-        # Filter by author (allowlist - safe from SQL injection via ORM)
-        author = self.request.query_params.get('author', None)
+        params = self.request.query_params
+
+        author = params.get('author')
         if author is not None:
             queryset = queryset.filter(author__icontains=author)
-        
-        # Filter by price range (numeric validation)
-        min_price = self.request.query_params.get('min_price', None)
+
+        # Use Decimal to match Book.price's DecimalField — float would
+        # introduce binary-rounding error on edge prices like 19.99.
+        min_price = params.get('min_price')
         if min_price is not None:
             try:
-                min_price = float(min_price)
-                queryset = queryset.filter(price__gte=min_price)
-            except (ValueError, TypeError):
-                pass  # Ignore invalid input
-        
-        max_price = self.request.query_params.get('max_price', None)
+                queryset = queryset.filter(price__gte=Decimal(min_price))
+            except (InvalidOperation, TypeError):
+                pass
+
+        max_price = params.get('max_price')
         if max_price is not None:
             try:
-                max_price = float(max_price)
-                queryset = queryset.filter(price__lte=max_price)
-            except (ValueError, TypeError):
-                pass  # Ignore invalid input
-        
-        # Search across title and author (using Q objects - safe)
-        search = self.request.query_params.get('search', None)
+                queryset = queryset.filter(price__lte=Decimal(max_price))
+            except (InvalidOperation, TypeError):
+                pass
+
+        search = params.get('search')
         if search is not None:
-            # Limit search length to prevent abuse
-            if len(search) > 200:
-                search = search[:200]
+            # Cap length to avoid pathological regex/LIKE patterns.
+            search = search[:200]
             queryset = queryset.filter(
                 Q(title__icontains=search) | Q(author__icontains=search)
             )
-        
-        # Ordering with allowlist
-        ordering = self.request.query_params.get('ordering', None)
-        if ordering:
-            allowed_fields = ['title', 'author', 'price', 'created_at', '-title', '-author', '-price', '-created_at']
-            if ordering in allowed_fields:
-                queryset = queryset.order_by(ordering)
-        
+
+        ordering = params.get('ordering')
+        if ordering and ordering in ALLOWED_ORDERING_FIELDS:
+            queryset = queryset.order_by(ordering)
+
         return queryset

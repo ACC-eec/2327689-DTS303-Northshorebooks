@@ -12,8 +12,9 @@ DB_PASSWORD=your-database-password
 DB_HOST=localhost
 DB_PORT=3306
 
-# Database Type (set to True to use SQLite for local development)
-USE_SQLITE=True
+# Database Type (set to True only for SQLite-only local development)
+# Submission default is False so the marker uses MySQL per the brief.
+USE_SQLITE=False
 
 # Security Settings (set to True in production with HTTPS)
 SESSION_COOKIE_SECURE=False

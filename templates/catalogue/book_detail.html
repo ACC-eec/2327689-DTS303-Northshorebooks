@@ -4,37 +4,65 @@
 {% block title %}{{ book.title }} - Northshore Books{% endblock %}
 
 {% block content %}
-<div class="container section">
-    <div class="book-detail">
-        <div class="book-detail__image">
-            {% if book.cover_url %}
-                <img src="{{ book.cover_url }}" alt="{{ book.title }}" class="product-card__media">
-            {% else %}
-                <div class="product-card__placeholder">
-                    <span>{{ book.title|slice:":1" }}</span>
+<div class="book-detail-page">
+    <div class="container">
+        <a href="{% url 'book_list' %}" class="book-detail__breadcrumb">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            All books
+        </a>
+
+        <div class="book-detail">
+            <div class="book-detail__image">
+                {% if book.cover_url %}
+                    <img src="{{ book.cover_url }}" alt="{{ book.title }}" class="product-card__media">
+                {% else %}
+                    <div class="product-card__placeholder">
+                        <span>{{ book.title|slice:":1" }}</span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="book-detail__info">
+                <span class="book-detail__chip">From the shelves</span>
+
+                <h1 class="book-detail__title">
+                    <a class="feat-link" href="#req-9" title="See how this field meets requirement 9">{{ book.title }}</a>
+                </h1>
+                <p class="book-detail__author">by {{ book.author }}</p>
+
+                <p class="book-detail__price">${{ book.price }}</p>
+
+                <p class="stock-tag stock-tag--{% if book.is_in_stock %}available{% else %}sold-out{% endif %}">
+                    <a class="feat-link" href="#req-stock" title="Stock state — see explanation below">
+                        {% if book.is_in_stock %}Available &mdash; in stock{% else %}Currently out of stock{% endif %}
+                    </a>
+                </p>
+
+                {% if book.description %}
+                    <div class="book-detail__description">
+                        <h2>About this book</h2>
+                        <p>{{ book.description }}</p>
+                    </div>
+                {% endif %}
+
+                <div class="book-detail__actions">
+                    {% if user.is_authenticated %}
+                        {% if book.is_in_stock %}
+                            <form method="post" action="{% url 'add_to_basket' book.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn--pill btn--primary">Add to Basket</button>
+                            </form>
+                            <a href="{% url 'book_list' %}" class="btn btn--pill btn--ghost">Keep browsing</a>
+                        {% else %}
+                            <button type="button" class="btn btn--pill btn--primary" disabled aria-disabled="true">Sold out</button>
+                            <a href="{% url 'book_list' %}" class="btn btn--pill btn--ghost">Browse other titles</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn--pill btn--primary">Log in to add to basket</a>
+                        <a href="{% url 'register' %}" class="btn btn--pill btn--ghost">Create an account</a>
+                    {% endif %}
                 </div>
-            {% endif %}
-        </div>
-        <div class="book-detail__info">
-            <h1 class="book-detail__title">
-                <a class="feat-link" href="#req-9" title="See how this field meets requirement 9">{{ book.title }}</a>
-            </h1>
-            <p class="book-detail__author">by {{ book.author }}</p>
-            <p class="book-detail__price">${{ book.price }}</p>
-            {% if book.description %}
-                <div class="book-detail__description">
-                    <h2>Description</h2>
-                    <p>{{ book.description }}</p>
-                </div>
-            {% endif %}
-            {% if user.is_authenticated %}
-                <form method="post" action="{% url 'add_to_basket' book.pk %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn--pill btn--primary">Add to Basket</button>
-                </form>
-            {% else %}
-                <p><a href="{% url 'login' %}" class="btn btn--pill btn--primary">Login to Add to Basket</a></p>
-            {% endif %}
+            </div>
         </div>
     </div>
 </div>
@@ -61,6 +89,11 @@
             <span class="page-req__num">iii.</span>
             <h3 class="page-req__heading">Req 9. XSS prevention</h3>
             <p class="page-req__text">All fields are auto-escaped at render time. Even an admin who pasted a script tag into a title would see it as plain text in the browser, never executed.</p>
+        </article>
+        <article class="page-req" id="req-stock">
+            <span class="page-req__num">iv.</span>
+            <h3 class="page-req__heading">Innovation. Admin-managed stock</h3>
+            <p class="page-req__text">Customers see only the availability state, never the count. Staff edit the integer through the Django admin, and the order pipeline decrements stock atomically when an order is submitted &mdash; so a sold-out title cannot be over-ordered even by two shoppers checking out at once.</p>
         </article>
     </div>
 </section>

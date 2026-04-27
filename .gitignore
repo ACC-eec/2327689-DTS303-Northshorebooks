@@ -58,3 +58,7 @@ storage/logs/*.log
 # Local screen recordings / large media
 *.mp4
 *.mov
+
+# Report-side working docs (not part of the practical submission)
+docs/report/
+/report/

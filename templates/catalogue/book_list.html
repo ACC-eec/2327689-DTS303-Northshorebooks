@@ -4,11 +4,34 @@
 {% block title %}Books - Northshore Books{% endblock %}
 
 {% block content %}
-<div class="container section">
-    <h1 class="section-title">
-        <a class="feat-link" href="#req-1" title="See how this feature meets requirement 1">Browse Our Collection</a>
-    </h1>
+<!-- Catalogue editorial hero -->
+<section class="catalogue-hero">
+    <div class="catalogue-hero__inner">
+        <span class="catalogue-hero__eyebrow">The Catalogue</span>
+        <h1 class="catalogue-hero__title">
+            <a class="feat-link" href="#req-1" title="See how this meets requirement 1">Books from <em>the coast.</em></a>
+        </h1>
+        <p class="catalogue-hero__sub">A curated shelf of novels, poetry, and slim volumes hand-picked by our booksellers. Browse the lot below, or jump to a single title.</p>
+        {% if is_paginated %}
+        <div class="catalogue-hero__meta">
+            <div>
+                <strong>{{ page_obj.paginator.count }}</strong>
+                Titles in stock
+            </div>
+            <div>
+                <strong>Page {{ page_obj.number }}</strong>
+                of {{ page_obj.paginator.num_pages }}
+            </div>
+            <div>
+                <strong>Free</strong>
+                Browse without login
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
 
+<div class="container catalogue-grid-section">
     <div class="product-grid">
         {% for book in books %}
             <div class="product-card">
@@ -25,6 +48,9 @@
                     <h3 class="product-card__title">{{ book.title }}</h3>
                     <p class="product-card__author">{{ book.author }}</p>
                     <p class="product-card__price">${{ book.price }}</p>
+                    {% if not book.is_in_stock %}
+                        <p class="stock-tag stock-tag--sold-out stock-tag--small">Sold out</p>
+                    {% endif %}
                 </div>
             </div>
         {% empty %}

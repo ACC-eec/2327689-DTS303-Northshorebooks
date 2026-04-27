@@ -9,23 +9,23 @@
         <a class="feat-link" href="#req-4" title="See how the order view meets requirement 4">Order #{{ order.id }}</a>
     </h1>
 
-    <div class="stack" style="gap: var(--space-xl);">
+    <div class="stack stack--lg">
         <div class="order-detail-info">
-            <div class="stack" style="gap: var(--space-sm);">
+            <div class="stack stack--sm">
                 <p><strong>Status:</strong> {{ order.get_status_display }}</p>
                 <p><strong>Submitted:</strong> {{ order.submitted_at|date:"F d, Y g:i A" }}</p>
-                <p style="font-size: 20px; font-weight: var(--font-weight-semibold);"><strong>Total:</strong> ${{ order.total }}</p>
+                <p class="order-detail-info__total"><strong>Total:</strong> ${{ order.total }}</p>
             </div>
         </div>
-        
+
         <div>
-            <h2 style="font-size: 24px; margin-bottom: var(--space-md);">Items</h2>
-            <div class="stack" style="gap: var(--space-md);">
+            <h2 class="order-items-heading">Items</h2>
+            <div class="stack">
                 {% for item in order.items.all %}
                     <div class="order-detail-item">
                         <div class="order-detail-item__info">
-                            <h3 style="font-size: 18px; margin-bottom: 0;">{{ item.book.title }}</h3>
-                            <p style="color: var(--color-muted-600); margin-bottom: 0;">by {{ item.book.author }}</p>
+                            <h3>{{ item.book.title }}</h3>
+                            <p>by {{ item.book.author }}</p>
                         </div>
                         <div class="order-detail-item__quantity">
                             Qty: {{ item.quantity }}
@@ -41,8 +41,8 @@
             </div>
         </div>
     </div>
-    
-    <div style="margin-top: var(--space-xl);">
+
+    <div class="actions-row">
         <a href="{% url 'order_history' %}" class="btn btn--pill btn--ghost">Back to History</a>
     </div>
 </div>

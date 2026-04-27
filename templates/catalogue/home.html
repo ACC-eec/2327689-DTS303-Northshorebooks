@@ -41,7 +41,7 @@
     </div>
 
     <div class="welcome-container">
-        <h1 class="welcome-title">Books for quiet mornings <em style="font-style:italic; color: var(--color-sand-200);">by the water.</em></h1>
+        <h1 class="welcome-title">Books for quiet mornings <em class="welcome-title__accent">by the water.</em></h1>
         <p class="welcome-subtitle">A curated shelf from a small coastal bookshop &mdash; novels we keep pressing on friends, poetry we read aloud at dusk.</p>
         <a href="{% url 'book_list' %}" class="welcome-button">Browse the shop</a>
     </div>
@@ -70,8 +70,10 @@
                         <div class="book-info">
                             <h3 class="book-title">{{ book.title }}</h3>
                             <p class="book-author">{{ book.author }}</p>
-                            {% if forloop.counter <= 3 %}
-                            <span class="bestseller-badge">Staff pick</span>
+                            {% if not book.is_in_stock %}
+                                <span class="stock-tag stock-tag--sold-out stock-tag--small">Sold out</span>
+                            {% elif forloop.counter <= 3 %}
+                                <span class="bestseller-badge">Staff pick</span>
                             {% endif %}
                         </div>
                     </a>
@@ -91,8 +93,10 @@
                         <div class="book-info">
                             <h3 class="book-title">{{ book.title }}</h3>
                             <p class="book-author">{{ book.author }}</p>
-                            {% if forloop.counter <= 3 %}
-                            <span class="bestseller-badge">Staff pick</span>
+                            {% if not book.is_in_stock %}
+                                <span class="stock-tag stock-tag--sold-out stock-tag--small">Sold out</span>
+                            {% elif forloop.counter <= 3 %}
+                                <span class="bestseller-badge">Staff pick</span>
                             {% endif %}
                         </div>
                     </a>

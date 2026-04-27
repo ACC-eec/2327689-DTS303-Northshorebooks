@@ -1,10 +1,14 @@
-"""
-Seed the catalogue from the Open Library API.
+"""Populate the catalogue with real books fetched from Open Library.
 
-Fetches title, authors, description and cover image for each ISBN, then
-downloads the cover into MEDIA_ROOT/covers/ via the Book.cover_image ImageField.
+For each ISBN in the run, the command fetches the title, authors and
+description, downloads the cover image into ``MEDIA_ROOT/covers/`` via
+``Book.cover_image``, and either creates a new ``Book`` or updates the
+existing one. Designed to leave the prototype with a recognisable
+shelf — Gatsby, Mockingbird, 1984 — rather than the placeholder strings
+a generic seed command would produce.
 
-Usage:
+Usage::
+
     python manage.py seed_from_openlibrary
     python manage.py seed_from_openlibrary --clear
     python manage.py seed_from_openlibrary --isbns 9780743273565,9780061120084
@@ -21,7 +25,7 @@ from catalogue.models import Book
 
 
 def _nfc(text):
-    """Normalize Unicode to NFC so Windows cp1252 consoles can print (e.g. Brontë)."""
+    """Normalise Unicode to NFC so a Windows cp1252 console can print Brontë."""
     return unicodedata.normalize('NFC', text or '')
 
 
