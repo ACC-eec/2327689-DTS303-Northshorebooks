@@ -3,6 +3,9 @@
 # Runs once when the codespace is first built. Marker does not need to run this manually.
 set -euo pipefail
 
+echo "==> Ensuring runtime directories exist..."
+mkdir -p storage/logs
+
 echo "==> Installing system packages required by mysqlclient..."
 sudo apt-get update -q
 sudo apt-get install -y -q --no-install-recommends \
