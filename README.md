@@ -2,6 +2,28 @@
 
 A Django web application for a small bookshop with public catalogue, REST API, user authentication, order management, and admin interface.
 
+---
+
+## How to launch this site (for the marker)
+
+This repository is configured to run as a **GitHub Codespace** with a one-click setup.
+
+1. From this repository on GitHub, click **`Code`** ▸ **`Codespaces`** ▸ **`Create codespace on main`**.
+2. Wait ~2–3 minutes while the codespace builds. It automatically installs Python, MySQL 8, project dependencies, runs migrations, creates an admin account, and seeds sample books.
+3. When the terminal shows `Northshore Books is ready`, run:
+   ```
+   python manage.py runserver 0.0.0.0:8000
+   ```
+4. Codespaces will prompt to open the forwarded port 8000 in your browser. Click it.
+
+**Admin login:** `admin` / `NorthshoreAdmin1234!` at `/admin/`
+**API docs:** `/api/docs/` (Swagger UI)
+**Database:** MySQL 8.0 (running as a sidecar container; configured via `.devcontainer/`)
+
+If anything fails, the legacy local setup is documented further down.
+
+---
+
 ## Tech Stack
 
 - **Backend**: Python 3.11+, Django 5.0.3

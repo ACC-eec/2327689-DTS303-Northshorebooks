@@ -1,0 +1,36 @@
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/python:3.11
+    volumes:
+      - ../:/workspace:cached
+    command: sleep infinity
+    network_mode: service:db
+    environment:
+      DEBUG: "True"
+      USE_SQLITE: "False"
+      ALLOWED_HOSTS: "*"
+      SECRET_KEY: "devcontainer-only-key-not-for-production"
+      DB_NAME: northshore_books
+      DB_USER: root
+      DB_PASSWORD: northshore_root_pw
+      DB_HOST: "127.0.0.1"
+      DB_PORT: "3306"
+      SESSION_COOKIE_SECURE: "False"
+      CSRF_COOKIE_SECURE: "False"
+
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: northshore_root_pw
+      MYSQL_DATABASE: northshore_books
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pnorthshore_root_pw"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  mysql-data:
