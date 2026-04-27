@@ -1683,7 +1683,7 @@ h1, h2, h3 { font-family: var(--font-serif); font-weight: 400; letter-spacing: -
   <a href="#s10" data-label="Basket"></a>
   <a href="#s11" data-label="Do & Don't"></a>
   <a href="#s12" data-label="Implementation"></a>
-  <a href="#s13" data-label="Closing"></a>
+  <a href="#s13" data-label="Requirements"></a>
 </nav>
 
 <!-- ==================== SLIDE 1: COVER ==================== -->
@@ -2360,40 +2360,139 @@ h1, h2, h3 { font-family: var(--font-serif); font-weight: 400; letter-spacing: -
   <span class="slide-num">12 / 13</span>
 </section>
 
-<!-- ==================== SLIDE 12: CLOSING ==================== -->
-<section class="slide slide--closing" id="s13">
-  <!-- Closing scene: moon setting over horizon, distant lighthouse, gulls -->
+<!-- ==================== SLIDE 13: REQUIREMENTS ==================== -->
+<section class="slide slide--requirements" id="s13">
   <div class="scene" aria-hidden="true">
-    <div class="starfield">
-      <span class="star-dot" style="top:15%; left:22%; --dur:5s; --delay:0.5s; opacity:0.4;"></span>
-      <span class="star-dot star-dot--sm" style="top:9%; left:35%; --dur:4s; --delay:1.5s;"></span>
-      <span class="star-dot" style="top:20%; left:48%; --dur:4.6s; --delay:0.9s;"></span>
-      <span class="star-dot star-dot--sm" style="top:12%; left:66%; --dur:3.8s; --delay:2.2s;"></span>
-      <span class="star-dot star-dot--sm" style="top:24%; left:82%; --dur:5.4s; --delay:0.3s;"></span>
-    </div>
-    <div class="moon closing-moon"><svg><use href="#i-moon"/></svg></div>
-    <div class="lighthouse lighthouse--sm closing-lighthouse">
-      <div class="lighthouse-beam lighthouse-beam--sm"></div>
-      <svg><use href="#i-lighthouse"/></svg>
-    </div>
-    <div class="gull" style="top:38%; --dur:70s; --delay:0s; color:#2E6B8F;"><svg><use href="#i-gull"/></svg></div>
-    <div class="gull gull--sm" style="top:30%; --dur:95s; --delay:-40s; color:#2E6B8F;"><svg><use href="#i-gull"/></svg></div>
-    <div class="horizon" style="height:90px; color:#A8CCE0; opacity:0.45;">
-      <svg><use href="#i-wave-long"/></svg>
-      <svg><use href="#i-wave-long"/></svg>
-      <svg><use href="#i-wave-long"/></svg>
-    </div>
+    <div class="gull gull--sm" style="top:8%; --dur:130s; --delay:-40s; color:var(--ocean-700); opacity:0.25;"><svg><use href="#i-gull"/></svg></div>
   </div>
-  <span class="slide-label">&mdash;</span>
-  <p class="closing-quote">&ldquo;The sea, once it casts its spell,<br>holds one <em>in its net of wonder</em> forever.&rdquo;</p>
-  <p class="closing-attribution">Jacques Cousteau &middot; borrowed for the shop</p>
-  <div class="closing-logo">
-    <div class="logo-mark">n</div>
-    <span class="closing-logo-text">northshore</span>
+  <span class="slide-label">12 &middot; Requirements</span>
+  <div class="reqs-intro">
+    <div class="eyebrow">Coursework</div>
+    <h2 class="reqs-title">How each page meets <em>the brief.</em></h2>
+    <p class="reqs-sub">A direct map from the ten practical requirements to the pages that satisfy them. Same wording lives at the bottom of every page in the live app, so the marker can verify in either place.</p>
   </div>
-  <p style="margin-top:60px;font-size:13px;color:var(--ink-muted);letter-spacing:0.15em;text-transform:uppercase;">End of deck &middot; v1 &middot; DTS303 Northshore Books</p>
+
+  <div class="reqs-grid">
+    <article class="reqs-card">
+      <header class="reqs-card__header"><span class="reqs-card__page">Home</span><span class="reqs-card__nums">Reqs 1, 9, 10</span></header>
+      <p class="reqs-card__body">The catalogue is open to anyone, no login required. The featured carousel pulls books from the Django ORM and every title is auto-escaped before render. The same catalogue is served as paginated JSON at /api/books/.</p>
+    </article>
+
+    <article class="reqs-card">
+      <header class="reqs-card__header"><span class="reqs-card__page">Book list</span><span class="reqs-card__nums">Reqs 1, 6, 10</span></header>
+      <p class="reqs-card__body">Lists every book with title, author, price, and cover. Search and filter parameters route through Django's ORM, never raw SQL, so injection attempts are rejected. Books are paginated, with the same data available as JSON.</p>
+    </article>
+
+    <article class="reqs-card">
+      <header class="reqs-card__header"><span class="reqs-card__page">Book detail</span><span class="reqs-card__nums">Reqs 1, 7, 9</span></header>
+      <p class="reqs-card__body">A dedicated page per book showing every field. The Add to basket form carries a CSRF token and is rejected without it. All fields are auto-escaped, so a script tag in a title renders as plain text.</p>
+    </article>
+
+    <article class="reqs-card">
+      <header class="reqs-card__header"><span class="reqs-card__page">Register</span><span class="reqs-card__nums">Reqs 3, 7, 8</span></header>
+      <p class="reqs-card__body">Creates a new user. Passwords are stored with PBKDF2 and a per-user salt, never plain text. The form carries a CSRF token. Length and common-password validators run server side before the user is created.</p>
+    </article>
+
+    <article class="reqs-card">
+      <header class="reqs-card__header"><span class="reqs-card__page">Login</span><span class="reqs-card__nums">Reqs 3, 7, 8</span></header>
+      <p class="reqs-card__body">Authenticates against the hashed password store. After 5 failed attempts in 5 minutes the username is locked out. The session ID is rotated on success so an old session cookie cannot be reused.</p>
+    </article>
+
+    <article class="reqs-card">
+      <header class="reqs-card__header"><span class="reqs-card__page">Basket</span><span class="reqs-card__nums">Reqs 4, 7, 8</span></header>
+      <p class="reqs-card__body">Logged-in users add, change, and remove items before submit. Every form ships a CSRF token. On submit the server recalculates the total from the database, so client-side tampering with prices is ignored.</p>
+    </article>
+
+    <article class="reqs-card">
+      <header class="reqs-card__header"><span class="reqs-card__page">Order history</span><span class="reqs-card__nums">Reqs 4, 8</span></header>
+      <p class="reqs-card__body">Lists every order this user has submitted, read-only. The query filters by request.user, so a customer never sees another customer's orders.</p>
+    </article>
+
+    <article class="reqs-card">
+      <header class="reqs-card__header"><span class="reqs-card__page">Order detail</span><span class="reqs-card__nums">Reqs 4, 8</span></header>
+      <p class="reqs-card__body">Read-only line items and total for one submitted order. An ownership check at the view layer 404s any attempt to view someone else's order by guessing an ID in the URL.</p>
+    </article>
+
+    <article class="reqs-card reqs-card--admin">
+      <header class="reqs-card__header"><span class="reqs-card__page">Django admin</span><span class="reqs-card__nums">Req 5</span></header>
+      <p class="reqs-card__body">Staff add, update, and remove books and view all customer orders through Django's built-in admin at /admin/, with permissions enforced by IsAdminUser.</p>
+    </article>
+
+    <article class="reqs-card reqs-card--admin">
+      <header class="reqs-card__header"><span class="reqs-card__page">REST API</span><span class="reqs-card__nums">Reqs 2, 10</span></header>
+      <p class="reqs-card__body">DRF endpoint at /api/books/. GET list and detail are public. POST, PUT, PATCH, DELETE are admin-only. JSON responses with built-in pagination and search filtering.</p>
+    </article>
+  </div>
+
   <span class="slide-num">13 / 13</span>
 </section>
+
+<style>
+.slide--requirements {
+  background: linear-gradient(180deg, var(--cream-50) 0%, #ECDFC4 100%);
+  padding: 70px 60px 90px;
+}
+.reqs-intro {
+  max-width: 760px;
+  margin: 0 auto 50px;
+  text-align: center;
+}
+.reqs-title {
+  font-family: var(--font-serif);
+  font-size: clamp(36px, 4vw, 56px);
+  color: var(--deep-navy);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+.reqs-title em { font-style: italic; color: var(--ocean-700); }
+.reqs-sub { color: var(--ink-muted); font-size: 15px; line-height: 1.55; max-width: 580px; margin: 0 auto; }
+
+.reqs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+.reqs-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 22px 22px 20px;
+  border-left: 3px solid var(--ocean-700);
+  box-shadow: 0 4px 14px rgba(11, 59, 92, 0.05);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s;
+}
+.reqs-card:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(11, 59, 92, 0.1); }
+.reqs-card--admin { border-left-color: var(--coral); }
+.reqs-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+  gap: 12px;
+}
+.reqs-card__page {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--deep-navy);
+  line-height: 1.1;
+}
+.reqs-card__nums {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ocean-700);
+  white-space: nowrap;
+}
+.reqs-card--admin .reqs-card__nums { color: #A35A42; }
+.reqs-card__body { font-size: 13px; line-height: 1.55; color: var(--ink); margin: 0; }
+
+@media (max-width: 900px) {
+  .slide--requirements { padding: 60px 24px 80px; }
+}
+</style>
 
 <script>
 (function () {

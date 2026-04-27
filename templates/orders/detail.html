@@ -5,12 +5,9 @@
 
 {% block content %}
 <div class="container section">
-    <h1 class="section-title">Order #{{ order.id }}</h1>
-
-    <aside class="req-chip" role="note" aria-label="Coursework requirement met by this page">
-        <span class="req-chip__label">Meets&nbsp;Req&nbsp;4, 8</span>
-        <p class="req-chip__text">Read-only single-order view (Req&nbsp;4) &mdash; 404s when a user tries to load another user's order (Req&nbsp;8).</p>
-    </aside>
+    <h1 class="section-title">
+        <a class="feat-link" href="#req-4" title="See how the order view meets requirement 4">Order #{{ order.id }}</a>
+    </h1>
 
     <div class="stack" style="gap: var(--space-xl);">
         <div class="order-detail-info">
@@ -49,4 +46,25 @@
         <a href="{% url 'order_history' %}" class="btn btn--pill btn--ghost">Back to History</a>
     </div>
 </div>
+
+<!-- ==================== Page requirements ==================== -->
+<section class="page-requirements" id="page-requirements" aria-labelledby="page-requirements-title">
+    <div class="page-requirements__intro">
+        <span class="page-requirements__eyebrow">Coursework</span>
+        <h2 id="page-requirements-title" class="page-requirements__title">How this page meets <em>the brief.</em></h2>
+        <p class="page-requirements__sub">Click any underlined feature above to jump to its explanation.</p>
+    </div>
+    <div class="page-requirements__grid">
+        <article class="page-req" id="req-4">
+            <span class="page-req__num">i.</span>
+            <h3 class="page-req__heading">Req 4. Read-only single order</h3>
+            <p class="page-req__text">Shows line items, quantities, prices, and total for one submitted order. The view does not expose any edit, cancel, or delete control to the customer.</p>
+        </article>
+        <article class="page-req" id="req-8">
+            <span class="page-req__num">ii.</span>
+            <h3 class="page-req__heading">Req 8. Ownership check</h3>
+            <p class="page-req__text">An ownership check at the view layer 404s any attempt to view someone else's order, so a user cannot peek at another customer's purchases by guessing an ID in the URL.</p>
+        </article>
+    </div>
+</section>
 {% endblock %}

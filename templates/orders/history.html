@@ -5,12 +5,9 @@
 
 {% block content %}
 <div class="container section">
-    <h1 class="section-title">Order History</h1>
-
-    <aside class="req-chip" role="note" aria-label="Coursework requirement met by this page">
-        <span class="req-chip__label">Meets&nbsp;Req&nbsp;4, 8</span>
-        <p class="req-chip__text">Read-only list of submitted orders (Req&nbsp;4), filtered to the current user via an ownership check that 404s on someone else's order (Req&nbsp;8).</p>
-    </aside>
+    <h1 class="section-title">
+        <a class="feat-link" href="#req-4" title="See how order history meets requirement 4">Order History</a>
+    </h1>
 
     {% if orders %}
         <div class="stack" style="gap: var(--space-lg);">
@@ -44,4 +41,25 @@
         </div>
     {% endif %}
 </div>
+
+<!-- ==================== Page requirements ==================== -->
+<section class="page-requirements" id="page-requirements" aria-labelledby="page-requirements-title">
+    <div class="page-requirements__intro">
+        <span class="page-requirements__eyebrow">Coursework</span>
+        <h2 id="page-requirements-title" class="page-requirements__title">How this page meets <em>the brief.</em></h2>
+        <p class="page-requirements__sub">Click any underlined feature above to jump to its explanation.</p>
+    </div>
+    <div class="page-requirements__grid">
+        <article class="page-req" id="req-4">
+            <span class="page-req__num">i.</span>
+            <h3 class="page-req__heading">Req 4. Read-only previous orders</h3>
+            <p class="page-req__text">Lists every order this user has submitted. Once submitted, an order cannot be edited from the customer side, only viewed.</p>
+        </article>
+        <article class="page-req" id="req-8">
+            <span class="page-req__num">ii.</span>
+            <h3 class="page-req__heading">Req 8. Ownership check</h3>
+            <p class="page-req__text">The query filters by the logged-in user, so a customer never sees another customer's orders. The view layer also returns 404 if a user guesses someone else's order ID.</p>
+        </article>
+    </div>
+</section>
 {% endblock %}

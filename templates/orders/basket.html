@@ -5,12 +5,9 @@
 
 {% block content %}
 <div class="container section">
-    <h1 class="section-title">Your Basket</h1>
-
-    <aside class="req-chip" role="note" aria-label="Coursework requirement met by this page">
-        <span class="req-chip__label">Meets&nbsp;Req&nbsp;4, 7, 8</span>
-        <p class="req-chip__text">Logged-in users add, update, and remove items (Req&nbsp;4); each action carries a CSRF token (Req&nbsp;7) and the server recalculates the total before submit (Req&nbsp;8).</p>
-    </aside>
+    <h1 class="section-title">
+        <a class="feat-link" href="#req-4" title="See how the basket meets requirement 4">Your Basket</a>
+    </h1>
 
     {% if basket.items.all %}
         <div class="stack" style="margin-bottom: var(--space-xl);">
@@ -44,7 +41,7 @@
         
         <div class="basket-summary">
             <div class="basket-total">
-                Total: ${{ basket.total }}
+                <a class="feat-link" href="#req-8" title="See how the total meets requirement 8">Total: ${{ basket.total }}</a>
             </div>
             <form method="post" action="{% url 'submit_order' %}">
                 {% csrf_token %}
@@ -58,4 +55,30 @@
         </div>
     {% endif %}
 </div>
+
+<!-- ==================== Page requirements ==================== -->
+<section class="page-requirements" id="page-requirements" aria-labelledby="page-requirements-title">
+    <div class="page-requirements__intro">
+        <span class="page-requirements__eyebrow">Coursework</span>
+        <h2 id="page-requirements-title" class="page-requirements__title">How this page meets <em>the brief.</em></h2>
+        <p class="page-requirements__sub">Click any underlined feature above to jump to its explanation.</p>
+    </div>
+    <div class="page-requirements__grid">
+        <article class="page-req" id="req-4">
+            <span class="page-req__num">i.</span>
+            <h3 class="page-req__heading">Req 4. Order management</h3>
+            <p class="page-req__text">Logged-in users add books, change quantities, and remove items before submitting. Once submitted, the order moves to history and is read-only.</p>
+        </article>
+        <article class="page-req" id="req-7">
+            <span class="page-req__num">ii.</span>
+            <h3 class="page-req__heading">Req 7. CSRF protection</h3>
+            <p class="page-req__text">Every form on this page (update, remove, submit) ships with a CSRF token. Posts without the token are rejected before they touch the database.</p>
+        </article>
+        <article class="page-req" id="req-8">
+            <span class="page-req__num">iii.</span>
+            <h3 class="page-req__heading">Req 8. Server-side recalculation</h3>
+            <p class="page-req__text">On submit, the server recalculates the total from the database using the prices captured when items were added. Any tampering with prices in the browser is ignored.</p>
+        </article>
+    </div>
+</section>
 {% endblock %}

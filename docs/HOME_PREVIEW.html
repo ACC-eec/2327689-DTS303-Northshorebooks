@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Preview - Northshore Books</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/assets/css/ui.css">
+    <style>
+        /* preview-only banner */
+        .preview-banner {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(11, 59, 92, 0.92);
+            color: #FDF4DD;
+            padding: 8px 16px;
+            font: 500 12px/1.4 'Inter', sans-serif;
+            text-align: center;
+            z-index: 3000;
+            letter-spacing: 0.04em;
+            backdrop-filter: blur(8px);
+        }
+        .preview-banner strong { color: #E4D2AE; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; margin-right: 10px; }
+        body { padding-top: 32px; }
+    </style>
+</head>
+<body>
+
+<div class="preview-banner">
+    <strong>Static Preview</strong> Rendered without Django &mdash; covers, links, and forms are placeholders. Run <code style="background:rgba(255,255,255,0.1); padding:1px 6px; border-radius:4px;">python manage.py runserver</code> for the live app.
+</div>
+
+<!-- Scroll progress -->
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<!-- Cursor-follow ambient warm glow -->
+<div class="cursor-glow" aria-hidden="true"></div>
+
+<!-- SVG sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+        <radialGradient id="moonGrad" cx="35%" cy="35%" r="68%">
+            <stop offset="0%"  stop-color="#FDF4DD"/>
+            <stop offset="60%" stop-color="#E4D2AE"/>
+            <stop offset="100%" stop-color="#B89A6C"/>
+        </radialGradient>
+        <radialGradient id="moonHalo" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stop-color="#FDF4DD" stop-opacity="0.35"/>
+            <stop offset="60%"  stop-color="#FDF4DD" stop-opacity="0.08"/>
+            <stop offset="100%" stop-color="#FDF4DD" stop-opacity="0"/>
+        </radialGradient>
+        <symbol id="i-moon" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="58" fill="url(#moonHalo)"/>
+            <circle cx="60" cy="60" r="44" fill="url(#moonGrad)"/>
+            <circle cx="46" cy="48" r="4.5" fill="#000" opacity="0.06"/>
+            <circle cx="68" cy="66" r="7"   fill="#000" opacity="0.05"/>
+            <circle cx="72" cy="44" r="2.8" fill="#000" opacity="0.07"/>
+            <circle cx="50" cy="72" r="3.2" fill="#000" opacity="0.05"/>
+        </symbol>
+        <symbol id="i-gull" viewBox="0 0 40 18">
+            <path d="M2 14 Q 9 2 16 12 Q 20 15.5 24 12 Q 31 2 38 14"
+                  fill="none" stroke="currentColor" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+        </symbol>
+        <symbol id="i-lighthouse" viewBox="0 0 120 280">
+            <path d="M2 272 Q 18 258 38 263 Q 55 258 70 264 Q 90 258 118 272 L 118 280 L 2 280 Z" fill="#14283A" opacity="0.85"/>
+            <path d="M34 268 L 40 182 L 80 182 L 86 268 Z" fill="#F7EEDD" stroke="#14283A" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M54 268 L 54 252 Q 54 246 60 246 Q 66 246 66 252 L 66 268 Z" fill="#0B3B5C"/>
+            <circle cx="60" cy="230" r="3" fill="#0B3B5C"/>
+            <path d="M39 205 L 81 205 L 82.5 222 L 37.5 222 Z" fill="#C2573D"/>
+            <path d="M44 182 L 48 128 L 72 128 L 76 182 Z" fill="#F7EEDD" stroke="#14283A" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M46 155 L 74 155 L 75 168 L 45 168 Z" fill="#C2573D" opacity="0.92"/>
+            <rect x="42" y="120" width="36" height="8" fill="#14283A"/>
+            <rect x="42" y="111" width="36" height="1.4" fill="#14283A" opacity="0.7"/>
+            <line x1="46" y1="113" x2="46" y2="120" stroke="#14283A" stroke-width="0.9"/>
+            <line x1="54" y1="113" x2="54" y2="120" stroke="#14283A" stroke-width="0.9"/>
+            <line x1="66" y1="113" x2="66" y2="120" stroke="#14283A" stroke-width="0.9"/>
+            <line x1="74" y1="113" x2="74" y2="120" stroke="#14283A" stroke-width="0.9"/>
+            <rect x="48" y="84" width="24" height="27" fill="#DCEBF3" stroke="#14283A" stroke-width="1.4"/>
+            <line x1="60" y1="84" x2="60" y2="111" stroke="#14283A" stroke-width="0.7" opacity="0.45"/>
+            <line x1="48" y1="97" x2="72" y2="97" stroke="#14283A" stroke-width="0.7" opacity="0.45"/>
+            <circle cx="60" cy="97" r="7" fill="#FDF4DD" opacity="0.95"/>
+            <circle cx="60" cy="97" r="3" fill="#FFFFFF"/>
+            <path d="M45 84 Q 60 60 75 84" fill="#0B3B5C" stroke="#14283A" stroke-width="1.4"/>
+            <line x1="60" y1="60" x2="60" y2="48" stroke="#14283A" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="60" cy="47" r="2" fill="#14283A"/>
+        </symbol>
+        <symbol id="i-wave-long" viewBox="0 0 2400 140" preserveAspectRatio="none">
+            <path d="M0 80 C 150 30, 300 130, 450 80 C 600 30, 750 130, 900 80 C 1050 30, 1200 130, 1350 80 C 1500 30, 1650 130, 1800 80 C 1950 30, 2100 130, 2250 80 L 2400 80 L 2400 140 L 0 140 Z" fill="currentColor"/>
+        </symbol>
+    </defs>
+</svg>
+
+<!-- Nav -->
+<nav class="nav">
+    <div class="nav__left">
+        <a href="#" class="brand">
+            <span class="brand__mark" aria-hidden="true">n</span>
+            <span class="brand__word">northshore</span>
+        </a>
+    </div>
+    <div class="nav__center"></div>
+    <div class="nav__right">
+        <a href="#" class="icon-btn" aria-label="Log in" title="Log in">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </svg>
+        </a>
+    </div>
+</nav>
+
+<style>
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.brand__mark { width: 36px; height: 36px; border-radius: 50%; background: var(--color-deep-navy); color: var(--color-sand-100); display: inline-flex; align-items: center; justify-content: center; font-family: 'Fraunces', 'DM Serif Display', serif; font-style: italic; font-size: 22px; line-height: 1; flex-shrink: 0; }
+.brand__word { font-family: 'Inter', system-ui, sans-serif; font-weight: 500; font-size: 17px; color: var(--color-ink-900); letter-spacing: -0.01em; }
+</style>
+
+<main class="main-content">
+
+<!-- Welcome Header — seaside hero -->
+<section class="welcome-header">
+    <div class="scene" aria-hidden="true">
+        <div class="starfield">
+            <span class="star-dot star-dot--lg" style="top:14%; left:10%;  --dur:4.6s; --delay:0s;"></span>
+            <span class="star-dot"              style="top:8%;  left:22%;  --dur:5.2s; --delay:1.2s;"></span>
+            <span class="star-dot star-dot--sm" style="top:20%; left:32%;  --dur:4s;   --delay:0.4s;"></span>
+            <span class="star-dot"              style="top:12%; left:45%;  --dur:6s;   --delay:2s;"></span>
+            <span class="star-dot star-dot--lg" style="top:18%; left:60%;  --dur:5s;   --delay:0.8s;"></span>
+            <span class="star-dot star-dot--sm" style="top:24%; left:72%;  --dur:4.4s; --delay:1.6s;"></span>
+            <span class="star-dot"              style="top:10%; left:82%;  --dur:5.6s; --delay:0.2s;"></span>
+            <span class="star-dot star-dot--sm" style="top:28%; left:90%;  --dur:4.2s; --delay:2.4s;"></span>
+        </div>
+        <div class="moon moon--lg" style="top:8%; right:8%;"><svg><use href="#i-moon"/></svg></div>
+        <div class="lighthouse" style="right:12%; bottom:-30px;">
+            <div class="lighthouse-beam"></div>
+            <svg><use href="#i-lighthouse"/></svg>
+        </div>
+        <div class="gull" style="top:30%; --dur:80s; --delay:-10s;"><svg><use href="#i-gull"/></svg></div>
+        <div class="gull gull--sm" style="top:42%; --dur:110s; --delay:-50s;"><svg><use href="#i-gull"/></svg></div>
+        <div class="horizon" style="bottom:-2px; height:80px; color: var(--color-ocean-700);">
+            <svg><use href="#i-wave-long"/></svg>
+            <svg><use href="#i-wave-long"/></svg>
+            <svg><use href="#i-wave-long"/></svg>
+        </div>
+    </div>
+
+    <div class="welcome-container">
+        <h1 class="welcome-title">Books for quiet mornings <em style="font-style:italic; color: var(--color-sand-200);">by the water.</em></h1>
+        <p class="welcome-subtitle">A curated shelf from a small coastal bookshop &mdash; novels we keep pressing on friends, poetry we read aloud at dusk.</p>
+        <a href="#" class="welcome-button">Browse the shop</a>
+    </div>
+</section>
+
+<!-- Carousel -->
+<section class="carousel-section">
+    <div class="carousel-container">
+        <div class="carousel-header">
+            <h2 class="carousel-title">
+                <a class="feat-link feat-link--light" href="#req-1" title="See how this feature meets requirement 1">Featured Books</a>
+            </h2>
+        </div>
+        <div class="book-carousel">
+            <div class="carousel-track" id="previewTrack">
+                <!-- 9 sample books × 2 (for infinite scroll) — generated by JS to keep markup tidy -->
+            </div>
+        </div>
+        <div class="carousel-controls">
+            <button class="carousel-btn carousel-btn-prev" aria-label="Previous">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button class="carousel-btn carousel-btn-next" aria-label="Next">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== Page requirements ==================== -->
+<section class="page-requirements" id="page-requirements" aria-labelledby="page-requirements-title">
+    <div class="page-requirements__intro">
+        <span class="page-requirements__eyebrow">Coursework</span>
+        <h2 id="page-requirements-title" class="page-requirements__title">How this page meets <em>the brief.</em></h2>
+        <p class="page-requirements__sub">Click any underlined feature above to jump to its explanation.</p>
+    </div>
+    <div class="page-requirements__grid">
+        <article class="page-req" id="req-1">
+            <span class="page-req__num">i.</span>
+            <h3 class="page-req__heading">Req 1. Public book catalogue</h3>
+            <p class="page-req__text">The catalogue is open to anyone, no login required. The featured carousel pulls books straight from the Django ORM so the homepage is the public front door of the shop.</p>
+        </article>
+        <article class="page-req" id="req-9">
+            <span class="page-req__num">ii.</span>
+            <h3 class="page-req__heading">Req 9. XSS prevention</h3>
+            <p class="page-req__text">Every book title and author goes through Django's auto-escaping before render. Any HTML or script tags hidden inside the data become harmless text.</p>
+        </article>
+        <article class="page-req" id="req-10">
+            <span class="page-req__num">iii.</span>
+            <h3 class="page-req__heading">Req 10. JSON API and pagination</h3>
+            <p class="page-req__text">The same catalogue is served as paginated JSON at /api/books/. The carousel respects the same ordering rules used by the API.</p>
+        </article>
+    </div>
+</section>
+
+</main>
+
+<footer class="footer">
+    <p>&copy; 2026 Northshore Books &middot; books, by the sea.</p>
+</footer>
+
+<style>
+/* Sample-book cover gradients for the preview (real app uses uploaded covers) */
+.book-cover-placeholder.preview-c1 { background: linear-gradient(135deg, var(--color-ocean-700), var(--color-deep-navy)); color: var(--color-sand-100); }
+.book-cover-placeholder.preview-c2 { background: linear-gradient(135deg, var(--color-coral), var(--color-sand-200)); color: var(--color-ink-900); }
+.book-cover-placeholder.preview-c3 { background: linear-gradient(135deg, var(--color-foam), var(--color-sea-500)); color: var(--color-deep-navy); }
+.book-cover-placeholder.preview-c4 { background: linear-gradient(135deg, var(--color-sand-200), var(--color-driftwood)); color: var(--color-white); }
+.book-cover-placeholder.preview-c5 { background: linear-gradient(135deg, var(--color-sky-300), var(--color-ocean-700)); color: var(--color-sand-100); }
+.book-cover-placeholder.preview-c6 { background: linear-gradient(135deg, var(--color-deep-navy), var(--color-ink-900)); color: var(--color-sand-100); }
+.book-cover-placeholder.preview-c7 { background: linear-gradient(135deg, var(--color-sand-100), var(--color-coral)); color: var(--color-ink-900); }
+.book-cover-placeholder.preview-c8 { background: linear-gradient(135deg, var(--color-sea-500), var(--color-deep-navy)); color: var(--color-sand-100); }
+.book-cover-placeholder.preview-c9 { background: linear-gradient(135deg, #124B70, var(--color-sky-300)); color: var(--color-sand-100); }
+.book-cover-placeholder { font-size: 16px; padding: 14px; line-height: 1.1; text-align: center; }
+</style>
+
+<script>
+// Sample book data
+const sampleBooks = [
+    { title: 'Tide & Shore',     author: 'Mari Holden',     pick: true },
+    { title: 'Saltwater Hours',  author: 'A. J. Finch',     pick: true },
+    { title: 'The Harbour',      author: 'Rowan Li',        pick: true },
+    { title: 'Driftwood Letters',author: 'Anya Patel',      pick: false },
+    { title: 'Quiet Currents',   author: 'Nora Ellingham',  pick: false },
+    { title: 'Night Watch',      author: 'B. K. Møller',    pick: false },
+    { title: 'Dusk Sonnets',     author: 'Inga Pålsson',    pick: false },
+    { title: 'Cold Mornings',    author: 'Theo Kennard',    pick: false },
+    { title: 'Soft Anchorage',   author: 'Helena Cruz',     pick: false }
+];
+
+// Render carousel items (twice for seamless infinite scroll)
+const track = document.getElementById('previewTrack');
+function renderItems() {
+    const html = sampleBooks.map((b, i) => `
+        <div class="carousel-item">
+            <a href="#" class="book-card">
+                <div class="book-cover-placeholder preview-c${(i % 9) + 1}">
+                    <span style="display:block; font-family: 'Fraunces', serif; font-size: 18px;">${b.title}</span>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">${b.title}</h3>
+                    <p class="book-author">${b.author}</p>
+                    ${b.pick ? '<span class="bestseller-badge">Staff pick</span>' : ''}
+                </div>
+            </a>
+        </div>`).join('');
+    track.innerHTML = html + html; // duplicate for infinite scroll
+}
+renderItems();
+
+// Carousel auto-glide (same logic as the live home.html)
+(function () {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prevBtn = document.querySelector('.carousel-btn-prev');
+    const nextBtn = document.querySelector('.carousel-btn-next');
+    if (!track || !prevBtn || !nextBtn) return;
+
+    const scrollSpeed = 0.5;
+    let isPaused = reduceMotion;
+    const itemWidth = 160;
+    const firstSetWidth = track.scrollWidth / 2;
+
+    function glide() {
+        if (!isPaused) {
+            track.scrollLeft += scrollSpeed;
+            if (track.scrollLeft >= firstSetWidth) track.scrollLeft -= firstSetWidth;
+        }
+        requestAnimationFrame(glide);
+    }
+    track.addEventListener('mouseenter', () => { isPaused = true; });
+    track.addEventListener('mouseleave', () => { if (!reduceMotion) isPaused = false; });
+
+    let manualScrollTimeout;
+    function smoothScroll(distance) {
+        const startScroll = track.scrollLeft;
+        const duration = 500;
+        let startTime = null;
+        function animateScroll(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            track.scrollLeft = startScroll + distance * ease;
+            if (progress < 1) requestAnimationFrame(animateScroll);
+        }
+        requestAnimationFrame(animateScroll);
+        isPaused = true;
+        clearTimeout(manualScrollTimeout);
+        manualScrollTimeout = setTimeout(() => { if (!reduceMotion) isPaused = false; }, 3000);
+    }
+    nextBtn.addEventListener('click', () => smoothScroll(itemWidth));
+    prevBtn.addEventListener('click', () => smoothScroll(-itemWidth));
+    if (!reduceMotion) glide();
+})();
+
+// Cursor parallax + scroll progress + tempo (same as base.html)
+(function () {
+    const root = document.documentElement;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const bar = document.querySelector('.scroll-progress');
+    const updateProgress = () => {
+        if (!bar) return;
+        const max = root.scrollHeight - root.clientHeight;
+        bar.style.width = (max > 0 ? (root.scrollTop / max) * 100 : 0) + '%';
+    };
+    if (reduceMotion) {
+        updateProgress();
+        document.addEventListener('scroll', updateProgress, { passive: true });
+        return;
+    }
+    let targetMx = 0, targetMy = 0, mx = 0, my = 0;
+    let targetTempo = 1, tempo = 1;
+    let lastInteraction = performance.now();
+    let lastScrollY = window.scrollY;
+    let scrollVelocity = 0;
+    document.addEventListener('mousemove', (e) => {
+        targetMx = (e.clientX / window.innerWidth - 0.5) * 2;
+        targetMy = (e.clientY / window.innerHeight - 0.5) * 2;
+        root.style.setProperty('--cx', e.clientX + 'px');
+        root.style.setProperty('--cy', e.clientY + 'px');
+        lastInteraction = performance.now();
+    }, { passive: true });
+    document.addEventListener('scroll', () => {
+        scrollVelocity = Math.abs(window.scrollY - lastScrollY);
+        lastScrollY = window.scrollY;
+        lastInteraction = performance.now();
+        updateProgress();
+    }, { passive: true });
+    const ease = (a, b, f) => a + (b - a) * f;
+    function frame() {
+        mx = ease(mx, targetMx, 0.06);
+        my = ease(my, targetMy, 0.06);
+        root.style.setProperty('--mx', mx.toFixed(3));
+        root.style.setProperty('--my', my.toFixed(3));
+        const idleMs = performance.now() - lastInteraction;
+        targetTempo = scrollVelocity > 40 ? 0.72 : (idleMs > 2500 ? 1.6 : 1.0);
+        tempo = ease(tempo, targetTempo, 0.018);
+        root.style.setProperty('--tempo', tempo.toFixed(3));
+        scrollVelocity *= 0.88;
+        document.querySelectorAll('.moon').forEach(m => m.style.transform = `translate(${(mx*12).toFixed(1)}px, ${(my*8).toFixed(1)}px)`);
+        document.querySelectorAll('.lighthouse').forEach(l => l.style.transform = `translate(${(mx*3).toFixed(1)}px, ${(my*2).toFixed(1)}px)`);
+        document.querySelectorAll('.starfield').forEach(s => s.style.transform = `translate(${(mx*6).toFixed(1)}px, ${(my*4).toFixed(1)}px)`);
+        requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+    updateProgress();
+})();
+</script>
+
+</body>
+</html>
