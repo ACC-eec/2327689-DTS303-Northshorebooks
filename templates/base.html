@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Northshore Books{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'assets/css/ui.css' %}?v=2-seaside">
+</head>
+<body>
+
+<!-- Scroll progress -->
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<!-- Cursor-follow ambient warm glow -->
+<div class="cursor-glow" aria-hidden="true"></div>
+
+<!-- Reusable SVG sprite: moon, gull, lighthouse, wave -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+        <radialGradient id="moonGrad" cx="35%" cy="35%" r="68%">
+            <stop offset="0%"  stop-color="#FDF4DD"/>
+            <stop offset="60%" stop-color="#E4D2AE"/>
+            <stop offset="100%" stop-color="#B89A6C"/>
+        </radialGradient>
+        <radialGradient id="moonHalo" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stop-color="#FDF4DD" stop-opacity="0.35"/>
+            <stop offset="60%"  stop-color="#FDF4DD" stop-opacity="0.08"/>
+            <stop offset="100%" stop-color="#FDF4DD" stop-opacity="0"/>
+        </radialGradient>
+
+        <symbol id="i-moon" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="58" fill="url(#moonHalo)"/>
+            <circle cx="60" cy="60" r="44" fill="url(#moonGrad)"/>
+            <circle cx="46" cy="48" r="4.5" fill="#000" opacity="0.06"/>
+            <circle cx="68" cy="66" r="7"   fill="#000" opacity="0.05"/>
+            <circle cx="72" cy="44" r="2.8" fill="#000" opacity="0.07"/>
+            <circle cx="50" cy="72" r="3.2" fill="#000" opacity="0.05"/>
+        </symbol>
+
+        <symbol id="i-gull" viewBox="0 0 40 18">
+            <path d="M2 14 Q 9 2 16 12 Q 20 15.5 24 12 Q 31 2 38 14"
+                  fill="none" stroke="currentColor" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+        </symbol>
+
+        <symbol id="i-lighthouse" viewBox="0 0 120 280">
+            <path d="M2 272 Q 18 258 38 263 Q 55 258 70 264 Q 90 258 118 272 L 118 280 L 2 280 Z"
+                  fill="#14283A" opacity="0.85"/>
+            <path d="M34 268 L 40 182 L 80 182 L 86 268 Z"
+                  fill="#F7EEDD" stroke="#14283A" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M54 268 L 54 252 Q 54 246 60 246 Q 66 246 66 252 L 66 268 Z" fill="#0B3B5C"/>
+            <circle cx="60" cy="230" r="3" fill="#0B3B5C"/>
+            <path d="M39 205 L 81 205 L 82.5 222 L 37.5 222 Z" fill="#C2573D"/>
+            <path d="M44 182 L 48 128 L 72 128 L 76 182 Z"
+                  fill="#F7EEDD" stroke="#14283A" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M46 155 L 74 155 L 75 168 L 45 168 Z" fill="#C2573D" opacity="0.92"/>
+            <rect x="42" y="120" width="36" height="8" fill="#14283A"/>
+            <rect x="42" y="111" width="36" height="1.4" fill="#14283A" opacity="0.7"/>
+            <line x1="46" y1="113" x2="46" y2="120" stroke="#14283A" stroke-width="0.9"/>
+            <line x1="54" y1="113" x2="54" y2="120" stroke="#14283A" stroke-width="0.9"/>
+            <line x1="66" y1="113" x2="66" y2="120" stroke="#14283A" stroke-width="0.9"/>
+            <line x1="74" y1="113" x2="74" y2="120" stroke="#14283A" stroke-width="0.9"/>
+            <rect x="48" y="84" width="24" height="27" fill="#DCEBF3" stroke="#14283A" stroke-width="1.4"/>
+            <line x1="60" y1="84" x2="60" y2="111" stroke="#14283A" stroke-width="0.7" opacity="0.45"/>
+            <line x1="48" y1="97" x2="72" y2="97" stroke="#14283A" stroke-width="0.7" opacity="0.45"/>
+            <circle cx="60" cy="97" r="7" fill="#FDF4DD" opacity="0.95"/>
+            <circle cx="60" cy="97" r="3" fill="#FFFFFF"/>
+            <path d="M45 84 Q 60 60 75 84" fill="#0B3B5C" stroke="#14283A" stroke-width="1.4"/>
+            <line x1="60" y1="60" x2="60" y2="48" stroke="#14283A" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="60" cy="47" r="2" fill="#14283A"/>
+        </symbol>
+
+        <symbol id="i-wave-long" viewBox="0 0 2400 140" preserveAspectRatio="none">
+            <path d="M0 80 C 150 30, 300 130, 450 80 C 600 30, 750 130, 900 80 C 1050 30, 1200 130, 1350 80 C 1500 30, 1650 130, 1800 80 C 1950 30, 2100 130, 2250 80 L 2400 80 L 2400 140 L 0 140 Z"
+                  fill="currentColor"/>
+        </symbol>
+    </defs>
+</svg>
+
+<nav class="nav">
+    <div class="nav__left">
+        <a href="{% url 'home' %}" class="brand">
+            <span class="brand__mark" aria-hidden="true">n</span>
+            <span class="brand__word">northshore</span>
+        </a>
+    </div>
+    <div class="nav__center"></div>
+    <div class="nav__right">
+        {% if user.is_authenticated %}
+            <a href="{% url 'order_history' %}" class="icon-btn" aria-label="Orders" title="Orders">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="8" y1="13" x2="16" y2="13"/>
+                    <line x1="8" y1="17" x2="13" y2="17"/>
+                </svg>
+            </a>
+            <a href="{% url 'basket' %}" class="icon-btn" aria-label="Basket" title="Basket">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+            </a>
+            <a href="{% url 'logout' %}" class="icon-btn" aria-label="Log out" title="Log out">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+            </a>
+        {% else %}
+            <a href="{% url 'login' %}" class="icon-btn" aria-label="Log in" title="Log in">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+            </a>
+        {% endif %}
+    </div>
+</nav>
+
+<style>
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.brand__mark {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--color-deep-navy);
+    color: var(--color-sand-100);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+.brand__word {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--color-ink-900);
+    letter-spacing: -0.01em;
+}
+</style>
+
+<main class="main-content">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message message-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer class="footer">
+    <p>&copy; 2026 Northshore Books &middot; books, by the sea.</p>
+</footer>
+
+<script>
+(function () {
+    'use strict';
+    const root = document.documentElement;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Scroll progress
+    const bar = document.querySelector('.scroll-progress');
+    const updateProgress = () => {
+        if (!bar) return;
+        const max = root.scrollHeight - root.clientHeight;
+        bar.style.width = (max > 0 ? (root.scrollTop / max) * 100 : 0) + '%';
+    };
+
+    if (reduceMotion) {
+        updateProgress();
+        document.addEventListener('scroll', updateProgress, { passive: true });
+        return;
+    }
+
+    // Cursor parallax + dynamic tempo
+    let targetMx = 0, targetMy = 0, mx = 0, my = 0;
+    let targetTempo = 1, tempo = 1;
+    let lastInteraction = performance.now();
+    let lastScrollY = window.scrollY;
+    let scrollVelocity = 0;
+
+    const moons       = () => document.querySelectorAll('.moon');
+    const lighthouses = () => document.querySelectorAll('.lighthouse');
+    const starfields  = () => document.querySelectorAll('.starfield');
+
+    document.addEventListener('mousemove', (e) => {
+        targetMx = (e.clientX / window.innerWidth - 0.5) * 2;
+        targetMy = (e.clientY / window.innerHeight - 0.5) * 2;
+        root.style.setProperty('--cx', e.clientX + 'px');
+        root.style.setProperty('--cy', e.clientY + 'px');
+        lastInteraction = performance.now();
+    }, { passive: true });
+
+    document.addEventListener('scroll', () => {
+        scrollVelocity = Math.abs(window.scrollY - lastScrollY);
+        lastScrollY = window.scrollY;
+        lastInteraction = performance.now();
+        updateProgress();
+    }, { passive: true });
+
+    document.addEventListener('keydown', () => { lastInteraction = performance.now(); });
+
+    const ease = (a, b, f) => a + (b - a) * f;
+
+    function frame() {
+        mx = ease(mx, targetMx, 0.06);
+        my = ease(my, targetMy, 0.06);
+        root.style.setProperty('--mx', mx.toFixed(3));
+        root.style.setProperty('--my', my.toFixed(3));
+
+        const idleMs = performance.now() - lastInteraction;
+        if (scrollVelocity > 40)      targetTempo = 0.72;
+        else if (idleMs > 2500)       targetTempo = 1.6;
+        else                          targetTempo = 1.0;
+        tempo = ease(tempo, targetTempo, 0.018);
+        root.style.setProperty('--tempo', tempo.toFixed(3));
+        scrollVelocity *= 0.88;
+
+        const mxPx12 = (mx * 12).toFixed(1);
+        const myPx8  = (my * 8).toFixed(1);
+        const mxPx6  = (mx * 6).toFixed(1);
+        const myPx4  = (my * 4).toFixed(1);
+        const mxPx3  = (mx * 3).toFixed(1);
+        const myPx2  = (my * 2).toFixed(1);
+
+        moons().forEach(m       => { m.style.transform = `translate(${mxPx12}px, ${myPx8}px)`; });
+        lighthouses().forEach(l => { l.style.transform = `translate(${mxPx3}px, ${myPx2}px)`; });
+        starfields().forEach(s  => { s.style.transform = `translate(${mxPx6}px, ${myPx4}px)`; });
+
+        requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+    updateProgress();
+})();
+</script>
+
+</body>
+</html>

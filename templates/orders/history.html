@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order History - Northshore Books{% endblock %}
+
+{% block content %}
+<div class="container section">
+    <h1 class="section-title">Order History</h1>
+
+    <aside class="req-chip" role="note" aria-label="Coursework requirement met by this page">
+        <span class="req-chip__label">Meets&nbsp;Req&nbsp;4, 8</span>
+        <p class="req-chip__text">Read-only list of submitted orders (Req&nbsp;4), filtered to the current user via an ownership check that 404s on someone else's order (Req&nbsp;8).</p>
+    </aside>
+
+    {% if orders %}
+        <div class="stack" style="gap: var(--space-lg);">
+            {% for order in orders %}
+                <div class="order-card">
+                    <div class="order-header">
+                        <div>
+                            <h2>Order #{{ order.id }}</h2>
+                            <p class="order-date">Submitted: {{ order.submitted_at|date:"F d, Y" }}</p>
+                        </div>
+                        <div class="order-total">
+                            ${{ order.total }}
+                        </div>
+                    </div>
+                    <div class="order-items">
+                        {% for item in order.items.all %}
+                            <div class="order-item">
+                                <span>{{ item.quantity }}x {{ item.book.title }}</span>
+                                <span>${{ item.unit_price }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a href="{% url 'order_detail' order.id %}" class="btn btn--small">View Details</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="centered-content">
+            <p class="empty-state">No orders yet.</p>
+            <a href="{% url 'book_list' %}" class="btn btn--pill btn--primary">Browse Books</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

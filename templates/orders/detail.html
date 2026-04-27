@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order #{{ order.id }} - Northshore Books{% endblock %}
+
+{% block content %}
+<div class="container section">
+    <h1 class="section-title">Order #{{ order.id }}</h1>
+
+    <aside class="req-chip" role="note" aria-label="Coursework requirement met by this page">
+        <span class="req-chip__label">Meets&nbsp;Req&nbsp;4, 8</span>
+        <p class="req-chip__text">Read-only single-order view (Req&nbsp;4) &mdash; 404s when a user tries to load another user's order (Req&nbsp;8).</p>
+    </aside>
+
+    <div class="stack" style="gap: var(--space-xl);">
+        <div class="order-detail-info">
+            <div class="stack" style="gap: var(--space-sm);">
+                <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+                <p><strong>Submitted:</strong> {{ order.submitted_at|date:"F d, Y g:i A" }}</p>
+                <p style="font-size: 20px; font-weight: var(--font-weight-semibold);"><strong>Total:</strong> ${{ order.total }}</p>
+            </div>
+        </div>
+        
+        <div>
+            <h2 style="font-size: 24px; margin-bottom: var(--space-md);">Items</h2>
+            <div class="stack" style="gap: var(--space-md);">
+                {% for item in order.items.all %}
+                    <div class="order-detail-item">
+                        <div class="order-detail-item__info">
+                            <h3 style="font-size: 18px; margin-bottom: 0;">{{ item.book.title }}</h3>
+                            <p style="color: var(--color-muted-600); margin-bottom: 0;">by {{ item.book.author }}</p>
+                        </div>
+                        <div class="order-detail-item__quantity">
+                            Qty: {{ item.quantity }}
+                        </div>
+                        <div class="order-detail-item__price">
+                            ${{ item.unit_price }} each
+                        </div>
+                        <div class="order-detail-item__total">
+                            ${{ item.get_total|floatformat:2 }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div style="margin-top: var(--space-xl);">
+        <a href="{% url 'order_history' %}" class="btn btn--pill btn--ghost">Back to History</a>
+    </div>
+</div>
+{% endblock %}

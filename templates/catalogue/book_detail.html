@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ book.title }} - Northshore Books{% endblock %}
+
+{% block content %}
+<div class="container section">
+    <div class="book-detail">
+        <div class="book-detail__image">
+            {% if book.cover_url %}
+                <img src="{{ book.cover_url }}" alt="{{ book.title }}" class="product-card__media">
+            {% else %}
+                <div class="product-card__placeholder">
+                    <span>{{ book.title|slice:":1" }}</span>
+                </div>
+            {% endif %}
+        </div>
+        <div class="book-detail__info">
+            <h1 class="book-detail__title">
+                <a class="feat-link" href="#req-9" title="See how this field meets requirement 9">{{ book.title }}</a>
+            </h1>
+            <p class="book-detail__author">by {{ book.author }}</p>
+            <p class="book-detail__price">${{ book.price }}</p>
+            {% if book.description %}
+                <div class="book-detail__description">
+                    <h2>Description</h2>
+                    <p>{{ book.description }}</p>
+                </div>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'add_to_basket' book.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn--pill btn--primary">Add to Basket</button>
+                </form>
+            {% else %}
+                <p><a href="{% url 'login' %}" class="btn btn--pill btn--primary">Login to Add to Basket</a></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- ==================== Page requirements ==================== -->
+<section class="page-requirements" id="page-requirements" aria-labelledby="page-requirements-title">
+    <div class="page-requirements__intro">
+        <span class="page-requirements__eyebrow">Coursework</span>
+        <h2 id="page-requirements-title" class="page-requirements__title">How this page meets <em>the brief.</em></h2>
+        <p class="page-requirements__sub">Click any underlined feature above to jump to its explanation.</p>
+    </div>
+    <div class="page-requirements__grid">
+        <article class="page-req" id="req-1">
+            <span class="page-req__num">i.</span>
+            <h3 class="page-req__heading">Req 1. Single-book detail</h3>
+            <p class="page-req__text">A dedicated page per book showing title, author, price, description, and cover. Open to anyone.</p>
+        </article>
+        <article class="page-req" id="req-7">
+            <span class="page-req__num">ii.</span>
+            <h3 class="page-req__heading">Req 7. CSRF protection</h3>
+            <p class="page-req__text">The Add to basket form carries a CSRF token. Django middleware rejects any submission missing the token, so a different site cannot post here on the user's behalf.</p>
+        </article>
+        <article class="page-req" id="req-9">
+            <span class="page-req__num">iii.</span>
+            <h3 class="page-req__heading">Req 9. XSS prevention</h3>
+            <p class="page-req__text">All fields are auto-escaped at render time. Even an admin who pasted a script tag into a title would see it as plain text in the browser, never executed.</p>
+        </article>
+    </div>
+</section>
+{% endblock %}

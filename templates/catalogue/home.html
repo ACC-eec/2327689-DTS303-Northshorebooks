@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Northshore Books{% endblock %}
+
+{% block content %}
+<!-- Welcome Header — seaside hero -->
+<section class="welcome-header">
+    <div class="scene" aria-hidden="true">
+        <!-- starfield -->
+        <div class="starfield">
+            <span class="star-dot star-dot--lg" style="top:14%; left:10%;  --dur:4.6s; --delay:0s;"></span>
+            <span class="star-dot"              style="top:8%;  left:22%;  --dur:5.2s; --delay:1.2s;"></span>
+            <span class="star-dot star-dot--sm" style="top:20%; left:32%;  --dur:4s;   --delay:0.4s;"></span>
+            <span class="star-dot"              style="top:12%; left:45%;  --dur:6s;   --delay:2s;"></span>
+            <span class="star-dot star-dot--lg" style="top:18%; left:60%;  --dur:5s;   --delay:0.8s;"></span>
+            <span class="star-dot star-dot--sm" style="top:24%; left:72%;  --dur:4.4s; --delay:1.6s;"></span>
+            <span class="star-dot"              style="top:10%; left:82%;  --dur:5.6s; --delay:0.2s;"></span>
+            <span class="star-dot star-dot--sm" style="top:28%; left:90%;  --dur:4.2s; --delay:2.4s;"></span>
+        </div>
+
+        <!-- moon top right -->
+        <div class="moon moon--lg" style="top:8%; right:8%;"><svg><use href="#i-moon"/></svg></div>
+
+        <!-- lighthouse on the right -->
+        <div class="lighthouse" style="right:12%; bottom:-30px;">
+            <div class="lighthouse-beam"></div>
+            <svg><use href="#i-lighthouse"/></svg>
+        </div>
+
+        <!-- drifting seagulls -->
+        <div class="gull" style="top:30%; --dur:80s; --delay:-10s;"><svg><use href="#i-gull"/></svg></div>
+        <div class="gull gull--sm" style="top:42%; --dur:110s; --delay:-50s;"><svg><use href="#i-gull"/></svg></div>
+
+        <!-- horizon waves at base of hero -->
+        <div class="horizon" style="bottom:-2px; height:80px; color: var(--color-ocean-700);">
+            <svg><use href="#i-wave-long"/></svg>
+            <svg><use href="#i-wave-long"/></svg>
+            <svg><use href="#i-wave-long"/></svg>
+        </div>
+    </div>
+
+    <div class="welcome-container">
+        <h1 class="welcome-title">Books for quiet mornings <em style="font-style:italic; color: var(--color-sand-200);">by the water.</em></h1>
+        <p class="welcome-subtitle">A curated shelf from a small coastal bookshop &mdash; novels we keep pressing on friends, poetry we read aloud at dusk.</p>
+        <a href="{% url 'book_list' %}" class="welcome-button">Browse the shop</a>
+    </div>
+</section>
+
+<!-- Book Carousel Section -->
+<section class="carousel-section">
+    <div class="carousel-container">
+        <div class="carousel-header">
+            <h2 class="carousel-title">
+                <a class="feat-link feat-link--light" href="#req-1" title="See how this feature meets requirement 1">Featured Books</a>
+            </h2>
+        </div>
+        <div class="book-carousel">
+            <div class="carousel-track">
+                {% for book in books %}
+                <div class="carousel-item">
+                    <a href="{% url 'book_detail' book.pk %}" class="book-card">
+                        {% if book.cover_url %}
+                            <img src="{{ book.cover_url }}" alt="{{ book.title }}" class="book-cover">
+                        {% else %}
+                            <div class="book-cover-placeholder">
+                                <span>{{ book.title|slice:":1" }}</span>
+                            </div>
+                        {% endif %}
+                        <div class="book-info">
+                            <h3 class="book-title">{{ book.title }}</h3>
+                            <p class="book-author">{{ book.author }}</p>
+                            {% if forloop.counter <= 3 %}
+                            <span class="bestseller-badge">Staff pick</span>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+                <!-- Duplicate items for seamless infinite scroll -->
+                {% for book in books %}
+                <div class="carousel-item">
+                    <a href="{% url 'book_detail' book.pk %}" class="book-card">
+                        {% if book.cover_url %}
+                            <img src="{{ book.cover_url }}" alt="{{ book.title }}" class="book-cover">
+                        {% else %}
+                            <div class="book-cover-placeholder">
+                                <span>{{ book.title|slice:":1" }}</span>
+                            </div>
+                        {% endif %}
+                        <div class="book-info">
+                            <h3 class="book-title">{{ book.title }}</h3>
+                            <p class="book-author">{{ book.author }}</p>
+                            {% if forloop.counter <= 3 %}
+                            <span class="bestseller-badge">Staff pick</span>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="carousel-controls">
+            <button class="carousel-btn carousel-btn-prev" aria-label="Previous">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <button class="carousel-btn carousel-btn-next" aria-label="Next">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== Page requirements ==================== -->
+<section class="page-requirements" id="page-requirements" aria-labelledby="page-requirements-title">
+    <div class="page-requirements__intro">
+        <span class="page-requirements__eyebrow">Coursework</span>
+        <h2 id="page-requirements-title" class="page-requirements__title">How this page meets <em>the brief.</em></h2>
+        <p class="page-requirements__sub">Click any underlined feature above to jump to its explanation.</p>
+    </div>
+    <div class="page-requirements__grid">
+        <article class="page-req" id="req-1">
+            <span class="page-req__num">i.</span>
+            <h3 class="page-req__heading">Req 1. Public book catalogue</h3>
+            <p class="page-req__text">The catalogue is open to anyone, no login required. The featured carousel pulls books straight from the Django ORM so the homepage is the public front door of the shop.</p>
+        </article>
+        <article class="page-req" id="req-9">
+            <span class="page-req__num">ii.</span>
+            <h3 class="page-req__heading">Req 9. XSS prevention</h3>
+            <p class="page-req__text">Every book title and author goes through Django's auto-escaping before render. Any HTML or script tags hidden inside the data become harmless text.</p>
+        </article>
+        <article class="page-req" id="req-10">
+            <span class="page-req__num">iii.</span>
+            <h3 class="page-req__heading">Req 10. JSON API and pagination</h3>
+            <p class="page-req__text">The same catalogue is served as paginated JSON at /api/books/. The carousel respects the same ordering rules used by the API.</p>
+        </article>
+    </div>
+</section>
+
+<script>
+// Seamless infinite carousel with smooth continuous gliding
+document.addEventListener('DOMContentLoaded', function() {
+    const track = document.querySelector('.carousel-track');
+    const prevBtn = document.querySelector('.carousel-btn-prev');
+    const nextBtn = document.querySelector('.carousel-btn-next');
+
+    if (!track || !prevBtn || !nextBtn) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const scrollSpeed = 0.5;
+    let isPaused = reduceMotion;
+    let animationId = null;
+    const itemWidth = 160;
+    const firstSetWidth = track.scrollWidth / 2;
+
+    function glide() {
+        if (!isPaused) {
+            track.scrollLeft += scrollSpeed;
+            if (track.scrollLeft >= firstSetWidth) {
+                track.scrollLeft = track.scrollLeft - firstSetWidth;
+            }
+        }
+        animationId = requestAnimationFrame(glide);
+    }
+
+    track.addEventListener('mouseenter', () => { isPaused = true; });
+    track.addEventListener('mouseleave', () => { if (!reduceMotion) isPaused = false; });
+
+    let manualScrollTimeout;
+    function smoothScroll(distance) {
+        const startScroll = track.scrollLeft;
+        const duration = 500;
+        let startTime = null;
+        function animateScroll(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            track.scrollLeft = startScroll + distance * ease;
+            if (progress < 1) requestAnimationFrame(animateScroll);
+        }
+        requestAnimationFrame(animateScroll);
+
+        isPaused = true;
+        clearTimeout(manualScrollTimeout);
+        manualScrollTimeout = setTimeout(() => {
+            if (!reduceMotion) isPaused = false;
+        }, 3000);
+    }
+
+    nextBtn.addEventListener('click', () => smoothScroll(itemWidth));
+    prevBtn.addEventListener('click', () => smoothScroll(-itemWidth));
+
+    if (!reduceMotion) glide();
+});
+</script>
+{% endblock %}
